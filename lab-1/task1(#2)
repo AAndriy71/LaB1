@@ -1,59 +1,69 @@
-class Animal:
-    def init(self, species, name, age):
+# Interfaces
+class ZooEntity:
+    def display_info(self):
+        pass
+
+class KeeperEntity:
+    def display_info(self):
+        pass
+
+# Entities
+class Animal(ZooEntity):
+    def __init__(self, species, name, age):
         self.species = species
         self.name = name
         self.age = age
 
-class Enclosure:
-    def init(self, size, enclosure_type):
+    def display_info(self):
+        print(f"{self.name} - {self.species} - Age: {self.age}")
+
+class Enclosure(ZooEntity):
+    def __init__(self, size, enclosure_type):
         self.size = size
         self.enclosure_type = enclosure_type
 
+    def display_info(self):
+        print(f"{self.size} Enclosure - Type: {self.enclosure_type}")
+
 class Food:
-    def init(self, name, quantity):
+    def __init__(self, name, quantity):
         self.name = name
         self.quantity = quantity
 
-class ZooKeeper:
-    def init(self, name, age, position):
+    def display_info(self):
+        print(f"{self.name} - Quantity: {self.quantity}")
+
+class ZooKeeper(KeeperEntity):
+    def __init__(self, name, age, position):
         self.name = name
         self.age = age
         self.position = position
 
+    def display_info(self):
+        print(f"{self.name} - Age: {self.age} - Position: {self.position}")
+
+# Inventory
 class Inventory:
-    def init(self, animals, enclosures, foods, zookeepers):
-        self.animals = animals
-        self.enclosures = enclosures
-        self.foods = foods
-        self.zookeepers = zookeepers
+    def __init__(self, entities):
+        self.entities = entities
 
-    def display_animals(self):
-        for animal in self.animals:
-            print(f"{animal.name} - {animal.species} - Age: {animal.age}")
+    def display_entities_info(self):
+        for entity in self.entities:
+            entity.display_info()
 
-    def display_zookeepers(self):
-        for keeper in self.zookeepers:
-            print(f"{keeper.name} - Age: {keeper.age} - Position: {keeper.position}")
+# Usage
+if __name__ == "__main__":
+    lion = Animal("Lion", "Simba", 5)
+    tiger = Animal("Tiger", "Shere Khan", 7)
+    large_enclosure = Enclosure("Large", "Savanna")
+    small_enclosure = Enclosure("Small", "Jungle")
+    meat = Food("Meat", 100)
+    vegetables = Food("Vegetables", 50)
+    keeper1 = ZooKeeper("John", 30, "Senior Keeper")
+    keeper2 = ZooKeeper("Alice", 25, "Junior Keeper")
 
-    # Додайте інші методи для виведення інформації про інвентаризацію
+    entities = [lion, tiger, large_enclosure, small_enclosure, meat, vegetables, keeper1, keeper2]
+    inventory = Inventory(entities)
 
-# Приклад використання:
-lion = Animal("Lion", "Simba", 5)
-tiger = Animal("Tiger", "Shere Khan", 7)
-
-large_enclosure = Enclosure("Large", "Savanna")
-small_enclosure = Enclosure("Small", "Jungle")
-
-meat = Food("Meat", 100)
-vegetables = Food("Vegetables", 50)
-
-keeper1 = ZooKeeper("John", 30, "Senior Keeper")
-keeper2 = ZooKeeper("Alice", 25, "Junior Keeper")
-
-inventory = Inventory([lion, tiger], [large_enclosure, small_enclosure], [meat, vegetables], [keeper1, keeper2])
-
-print("Animals in the zoo:")
-inventory.display_animals()
-
-print("\nZookeepers:")
-inventory.display_zookeepers()
+    print("Zoo Inventory:")
+    inventory.display_entities_info()
