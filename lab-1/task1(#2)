@@ -1,0 +1,59 @@
+class Animal:
+    def init(self, species, name, age):
+        self.species = species
+        self.name = name
+        self.age = age
+
+class Enclosure:
+    def init(self, size, enclosure_type):
+        self.size = size
+        self.enclosure_type = enclosure_type
+
+class Food:
+    def init(self, name, quantity):
+        self.name = name
+        self.quantity = quantity
+
+class ZooKeeper:
+    def init(self, name, age, position):
+        self.name = name
+        self.age = age
+        self.position = position
+
+class Inventory:
+    def init(self, animals, enclosures, foods, zookeepers):
+        self.animals = animals
+        self.enclosures = enclosures
+        self.foods = foods
+        self.zookeepers = zookeepers
+
+    def display_animals(self):
+        for animal in self.animals:
+            print(f"{animal.name} - {animal.species} - Age: {animal.age}")
+
+    def display_zookeepers(self):
+        for keeper in self.zookeepers:
+            print(f"{keeper.name} - Age: {keeper.age} - Position: {keeper.position}")
+
+    # Додайте інші методи для виведення інформації про інвентаризацію
+
+# Приклад використання:
+lion = Animal("Lion", "Simba", 5)
+tiger = Animal("Tiger", "Shere Khan", 7)
+
+large_enclosure = Enclosure("Large", "Savanna")
+small_enclosure = Enclosure("Small", "Jungle")
+
+meat = Food("Meat", 100)
+vegetables = Food("Vegetables", 50)
+
+keeper1 = ZooKeeper("John", 30, "Senior Keeper")
+keeper2 = ZooKeeper("Alice", 25, "Junior Keeper")
+
+inventory = Inventory([lion, tiger], [large_enclosure, small_enclosure], [meat, vegetables], [keeper1, keeper2])
+
+print("Animals in the zoo:")
+inventory.display_animals()
+
+print("\nZookeepers:")
+inventory.display_zookeepers()
