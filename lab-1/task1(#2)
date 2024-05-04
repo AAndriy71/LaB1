@@ -1,69 +1,165 @@
-# Interfaces
-class ZooEntity:
-    def display_info(self):
-        pass
+// Клас тварини
+class Animal {
+    constructor(name, species) {
+        this.name = name;
+        this.species = species;
+    }
+}
 
-class KeeperEntity:
-    def display_info(self):
-        pass
+// Клас виду тварин
+class Species {
+    constructor(name, classification) {
+        this.name = name;
+        this.classification = classification;
+    }
+}
 
-# Entities
-class Animal(ZooEntity):
-    def __init__(self, species, name, age):
-        self.species = species
-        self.name = name
-        self.age = age
+// Клас вольєру
+class Enclosure {
+    constructor(type, size) {
+        this.type = type;
+        this.size = size;
+        this.animals = [];
+    }
 
-    def display_info(self):
-        print(f"{self.name} - {self.species} - Age: {self.age}")
+    addAnimal(animal) {
+        this.animals.push(animal);
+    }
 
-class Enclosure(ZooEntity):
-    def __init__(self, size, enclosure_type):
-        self.size = size
-        self.enclosure_type = enclosure_type
+    removeAnimal(animal) {
+        this.animals = this.animals.filter(a => a !== animal);
+    }
+}
 
-    def display_info(self):
-        print(f"{self.size} Enclosure - Type: {self.enclosure_type}")
+// Клас корму для тварин
+class Food {
+    constructor(type, quantity) {
+        this.type = type;
+        this.quantity = quantity;
+    }
+}
 
-class Food:
-    def __init__(self, name, quantity):
-        self.name = name
-        self.quantity = quantity
+// Клас працівника зоопарку
+class ZooKeeper {
+    constructor(name, specialization) {
+        this.name = name;
+        this.specialization = specialization;
+    }
 
-    def display_info(self):
-        print(f"{self.name} - Quantity: {self.quantity}")
+    feedAnimal(animal, food) {
+        console.log(`${this.name} годує ${animal.name} з ${food.type}`);
+    }
+}
 
-class ZooKeeper(KeeperEntity):
-    def __init__(self, name, age, position):
-        self.name = name
-        self.age = age
-        self.position = position
+// Клас акваріуму
+class Aquarium extends Enclosure {
+    constructor(type, size, waterType) {
+        super(type, size);
+        this.waterType = waterType;
+    }
+}
 
-    def display_info(self):
-        print(f"{self.name} - Age: {self.age} - Position: {self.position}")
+// Клас пташиного вольєру
+class Aviary extends Enclosure {
+    constructor(type, size, climate) {
+        super(type, size);
+        this.climate = climate;
+    }
+}
 
-# Inventory
-class Inventory:
-    def __init__(self, entities):
-        self.entities = entities
+// Клас корму для риб
+class FishFood extends Food {
+    constructor(type, quantity, fishType) {
+        super(type, quantity);
+        this.fishType = fishType;
+    }
+}
 
-    def display_entities_info(self):
-        for entity in self.entities:
-            entity.display_info()
+// Клас ветеринара
+class Veterinarian extends ZooKeeper {
+    constructor(name, specialization, experienceYears) {
+        super(name, specialization);
+        this.experienceYears = experienceYears;
+    }
 
-# Usage
-if __name__ == "__main__":
-    lion = Animal("Lion", "Simba", 5)
-    tiger = Animal("Tiger", "Shere Khan", 7)
-    large_enclosure = Enclosure("Large", "Savanna")
-    small_enclosure = Enclosure("Small", "Jungle")
-    meat = Food("Meat", 100)
-    vegetables = Food("Vegetables", 50)
-    keeper1 = ZooKeeper("John", 30, "Senior Keeper")
-    keeper2 = ZooKeeper("Alice", 25, "Junior Keeper")
+    treatAnimal(animal) {
+        console.log(`${this.name} лікує ${animal.name}`);
+    }
+}
 
-    entities = [lion, tiger, large_enclosure, small_enclosure, meat, vegetables, keeper1, keeper2]
-    inventory = Inventory(entities)
+// Приклад використання
+const dolphinSpecies = new Species("Дельфін", "Ссавці");
+const dolphin = new Animal("Фліппер", dolphinSpecies);
+const dolphinTank = new Aquarium("Акваріум для дельфінів", "великий", "солонувата вода");
+dolphinTank.addAnimal(dolphin);
 
-    print("Zoo Inventory:")
-    inventory.display_entities_info()
+const fishFood = new FishFood("Риба", "1 кг", "Дельфіни");
+const maria = new ZooKeeper("Марія", "Морські тварини");
+maria.feedAnimal(dolphin, fishFood);
+
+const avianEnclosure = new Aviary("Вольєр для птахів", "середній", "теплий");
+const eagleSpecies = new Species("Орел", "Птахи");
+const eagle = new Animal("Шершень", eagleSpecies);
+avianEnclosure.addAnimal(eagle);
+
+const vet = new Veterinarian("Доктор Сміт", "Риби та птахи", 10);
+vet.treatAnimal(dolphin);
+// Клас інвентаризації
+class Inventory {
+    constructor(zoo) {
+        this.zoo = zoo;
+    }
+
+    displayAnimalInfo() {
+        console.log("Інформація про тварин:");
+        this.zoo.enclosures.forEach(enclosure => {
+            enclosure.animals.forEach(animal => {
+                console.log(`- ${animal.name} (${animal.species.name})`);
+            });
+        });
+    }
+
+    displayStaffInfo() {
+        console.log("Інформація про співробітників:");
+        this.zoo.staff.forEach(staffMember => {
+            console.log(`- ${staffMember.name}, ${staffMember.specialization}`);
+        });
+    }
+
+    displayEnclosureInfo() {
+        console.log("Інформація про вольєри:");
+        this.zoo.enclosures.forEach(enclosure => {
+            console.log(`- ${enclosure.type}, ${enclosure.size}`);
+        });
+    }
+}
+
+// Клас зоопарку
+class Zoo {
+    constructor() {
+        this.enclosures = [];
+        this.staff = [];
+    }
+
+    addEnclosure(enclosure) {
+        this.enclosures.push(enclosure);
+    }
+
+    addStaff(staffMember) {
+        this.staff.push(staffMember);
+    }
+}
+
+// Приклад використання
+const zoo = new Zoo();
+zoo.addEnclosure(dolphinTank);
+zoo.addEnclosure(avianEnclosure);
+const feeder = new ZooKeeper("Олег", "Риби та птахи");
+zoo.addStaff(maria);
+zoo.addStaff(vet);
+zoo.addStaff(feeder);
+
+const inventory = new Inventory(zoo);
+inventory.displayAnimalInfo();
+inventory.displayStaffInfo();
+inventory.displayEnclosureInfo();
